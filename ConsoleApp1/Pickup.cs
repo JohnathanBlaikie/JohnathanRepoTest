@@ -12,10 +12,17 @@ namespace ConsoleApp1
         public bool enabled = true;
         Color myColor = Color.GOLD;
         Color myColor2 = Color.LIGHTGRAY;
+        public static Texture2D pickUpTex;
+        //public Texture2D pickUpPng = rl.LoadTexture("kenney_aie/items/platformPack_item002.png");
+        public static void SetTex(string fileName)
+        {
+            pickUpTex = rl.LoadTexture(fileName);
+        }
         public void Draw()
         {
-            rl.DrawCircle(pos.x, pos.y, 3f, myColor);
-            rl.DrawCircle(pos.x, pos.y, 5f, myColor);
+            rl.DrawTextureEx(pickUpTex, new Vector2(pos.x,pos.y), 0f ,.25f,Color.GOLD);
+            //rl.DrawCircle(pos.x, pos.y, 3f, myColor);
+            //rl.DrawCircle(pos.x, pos.y, 5f, myColor);
             
         }
     }
