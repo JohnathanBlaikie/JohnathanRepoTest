@@ -1,7 +1,7 @@
 ﻿using Raylib;
 using rl = Raylib.Raylib;
 using System;
-
+using System.IO;
 namespace ConsoleApp1
 {
     static class Program
@@ -37,6 +37,8 @@ namespace ConsoleApp1
             rl.InitAudioDevice();
             Console.WriteLine($"INFO: Audio Device Status = {rl.IsAudioDeviceReady()}");
             Sound pickUpS = rl.LoadSound("resources/AmmoPickup.ogg");
+            StreamWriter writer;
+            writer = new StreamWriter("test.txt");
             int screenWidth = 800;
             int screenHeight = 450;
             int score = 0, highScore = 0;
@@ -49,6 +51,10 @@ namespace ConsoleApp1
             int idx = 0;
             rl.InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
             Pickup.SetTex("kenney_aie/items/platformPack_item002.png");
+
+            writer.WriteLine("Hello World!");
+            writer.Close();
+
             for (int x = 100; x < 700 && idx < 10; x += 40)
             {
                 pickUp[idx] = new Pickup();
