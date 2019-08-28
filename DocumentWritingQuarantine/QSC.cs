@@ -17,9 +17,10 @@ namespace DocumentWritingQuarantine
         }
         public string cSW(string uInp)
         {
-            StreamWriter quickWriter;
+            StreamWriter quickWriter = new StreamWriter("");
             StreamReader quickReader;
             //quickWriter = Console.ReadLine(); 
+            //uInp = quickReader(string )
             return uInp;
         }
     }

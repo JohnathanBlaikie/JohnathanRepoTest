@@ -37,14 +37,14 @@ namespace ConsoleApp1
             rl.InitAudioDevice();
             Console.WriteLine($"INFO: Audio Device Status = {rl.IsAudioDeviceReady()}");
             Sound pickUpS = rl.LoadSound("resources/AmmoPickup.ogg");
-            StreamWriter writer;
-            writer = new StreamWriter("test.txt");
             int screenWidth = 800;
             int screenHeight = 450;
             int score = 0, highScore = 0;
             int timer = 30*60;
+            int trueTime = 0;
+            string[] writeScore = new string[2];
             bool restartBool = false;
-            bool firstInc = true, secondInc = true, gameRunning = true;
+            bool firstInc = true, secondInc = true, thirdInc = true, gameRunning = true;
             Random r = new Random();
             Player myPlayer = new Player();
             Pickup[] pickUp = new Pickup[10];
@@ -52,9 +52,16 @@ namespace ConsoleApp1
             rl.InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
             Pickup.SetTex("kenney_aie/items/platformPack_item002.png");
 
-            writer.WriteLine("Hello World!");
+            StreamReader reader;
+            reader = new StreamReader("test.txt");
+            writeScore[0] = reader.ReadLine();
+            reader.Close();
+            StreamWriter writer;
+            writer = new StreamWriter("test.txt");
+            //writer.WriteLine("Hello World!");
             writer.Close();
 
+            
             for (int x = 100; x < 700 && idx < 10; x += 40)
             {
                 pickUp[idx] = new Pickup();
@@ -83,6 +90,9 @@ namespace ConsoleApp1
             // Main game loop
             while (!rl.WindowShouldClose())    // Detect window close button or ESC key
             {
+                timer--;
+                trueTime = trueTime++ / 60;
+                int temptime = timer / 60;
                 // Update
                 //----------------------------------------------------------------------------------
                 // TODO: Update your variables here
@@ -96,21 +106,30 @@ namespace ConsoleApp1
 
                 if (score == 10 && firstInc)
                 {
-                    timer += 10 * 60;
+                    timer += 5 * 60;
                     firstInc = false;
                 }
                 else if (score == 20 && secondInc)
                 {
-                    timer += 10 * 60;
+                    timer += 5 * 60;
                     secondInc = false;
                 }
+                else if(score >= 30 && thirdInc)
+                {
+                    
+                    writer = new StreamWriter("test.txt");
+                    writer.WriteLine(writeScore[0] = $"{Convert.ToString(highScore)}, {Convert.ToString(trueTime)}");
+                    writer.Close();
+                   
+                    gameRunning = false;
+                    thirdInc = false;
+                }          
                 else if(score >= 30)
                 {
-                    rl.DrawText("Congrats! You Win!", 190, 200, 20, Color.LIGHTGRAY);
-                    gameRunning = false;
-                }               
-                timer--;
-                int temptime = timer / 60;
+                    rl.DrawText("Congratulations! You Win!\n\t\t\tPress R to Restart", 275, 200, 20, Color.LIGHTGRAY);
+                    restartBool = rl.IsKeyPressed(KeyboardKey.KEY_R);
+                }
+                
                 myPlayer.RunUpdate();
                 myPlayer.Draw();
                 if (temptime <= 0 && score <30)
@@ -152,7 +171,7 @@ namespace ConsoleApp1
                     highScore = score;
                 
                 rl.DrawText($"Score: {score}", 50, 20, 20, Color.LIGHTGRAY);
-                rl.DrawText($"High Score: {highScore}", 50, 40, 20, Color.LIGHTGRAY);
+                rl.DrawText($"High Score: {writeScore[0]}", 50, 40, 20, Color.LIGHTGRAY);
                 //rl.DrawText("Congrats! You created your first window!", 190, 200, 20, Color.LIGHTGRAY);
 
 
